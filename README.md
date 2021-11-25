@@ -1,1 +1,1 @@
-Code for deneyap contest.
+
