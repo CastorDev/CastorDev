@@ -8,10 +8,10 @@ Servo altservo;
 Servo ortakolservo;
 Servo onservo;
 Servo tutucuservo;
-#define data1 D1    //Data pinlerinin adları yazılacak
+#define data1 D1    //Data pinlerinin adları yazılacak suanda calismiyor
 #define data2 D2    //yer tutucu
-#define data3 D3
-#define data4 D4
+#define data3 D3    //yer tutucu
+#define data4 D4    //yer tutucu
 
 
 
@@ -155,3 +155,11 @@ void loop() {
       stopmotor();    
     }
 }
+/*
+          YAPILMASI GEREKENLER
+   1.Servo data pinlerinin girilmesi
+   2.dc motor hareketlerinin kontrol edilmesi
+   3.Servoların hareket kodunun yazılması
+   4.test
+   5.hata giderme
+*/
