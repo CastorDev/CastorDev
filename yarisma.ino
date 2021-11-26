@@ -9,14 +9,14 @@ Servo ortakolservo;//data2
 Servo onservo;//data3
 Servo tutucuservo;//data5
 Servo tucualt;//data4
-#define data1 D1   //altservo
-#define data2 D2   //ortakolservo
+#define data1 DAC1   //altservo
+#define data2 DAC2   //ortakolservo
 #define data3 D3    //onservo
 #define data4 D4    //kiskac dondur
 #define data5 D8    //tutucu aç kapa
 
 
-const int generaldelay = 15; //genel gecikme
+const int generaldelay = 300; //genel gecikme
 const int vSpeed = 100;// hız değiştirmek için
 #define motorA1 D14 // L298N'in IN3 Girişi
 #define motorA2 D12 // L298N'in IN1 Girişi
@@ -34,17 +34,18 @@ pinMode(D0, INPUT_PULLUP);//button
 Serial.begin(115200);
   //----------------------------------------
 //-----------SERVOLAR-----------
+pinMode(DAC1,OUTPUT);pinMode(DAC2,OUTPUT);pinMode(D3,OUTPUT);pinMode(D4,OUTPUT);pinMode(D8,OUTPUT);
 //------SERVO SETUP----------
 altservo.attach(data1);
 ortakolservo.attach(data2);
 onservo.attach(data3);
 tutucuservo.attach(data5);
 tucualt.attach(data4);
-altservo.write(pos1);
-ortakolservo.write(pos2);
-onservo.write(pos3);
-tutucuservo.write(pos4);
-tucualt.write(pos5);
+altservo.write(90);
+ortakolservo.write(90);
+onservo.write(90);
+tutucuservo.write(90);
+tucualt.write(90);
 }
 
 
@@ -109,6 +110,7 @@ Serial.print("y3: ");Serial.println(y3);
 Serial.print("button: ");Serial.println(button);
 Serial.print("state: ");Serial.println(state);
 Serial.print("pos1: ");Serial.println(pos1);
+Serial.println("----------");
 delay(generaldelay);
 //----------------------
     if(button ==0){
@@ -120,7 +122,7 @@ delay(generaldelay);
       ilerle();
       delay(generaldelay);
     }
-    if (xbir >2000){
+     if (xbir >2000){
       geri();
       delay(generaldelay);
     }
@@ -128,44 +130,40 @@ delay(generaldelay);
       sag();
       delay(generaldelay);
     }
-    if(ybir >2000);{
+     if(ybir >2000);{
       sol();
       delay(generaldelay);
     }
   
   
   
-    if(x2 <300){
-     //kol yukari
+    if(y2 <300){
+     //kol sag
       delay(generaldelay);
     }
-    if(x2 >2000){
-      //kol asagi
+    if(y2 >2000){
+      //kol sol
       delay(generaldelay);
     }
-    if(y2 <300 && pos1<150){
-      //kol sag
-      pos1=pos1++;
+    if(x2 <300 && pos1<150){
+      //kol asagi?
+      pos1=pos1+4;
       altservo.write(pos1);
       Serial.println("Kol Sag");
-      Serial.println("pos1: ");
-      Serial.print(pos1);
       delay(generaldelay);
     }
-    if(y2 >2000 && pos1 > 10){
-      //kol sol
-      pos1=pos1--;
+     if(x2 >2000 && pos1 > 10){
+      //kol yukari?
+      pos1=pos1-4;
       altservo.write(pos1);
       Serial.println("Kol Sol");
-      Serial.print("pos1: ");
-      Serial.println(pos1);
       delay(generaldelay);
     }
     if(x3 <300){
       //
       delay(generaldelay);
     }
-    if(x3 >2000){
+     if(x3 >2000){
       //
       delay(generaldelay);
     }
