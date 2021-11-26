@@ -4,16 +4,16 @@ int xbir, x2, x3, ybir, y2, y3=0;
 int pos1,pos2,pos3,pos4,pos5 = 90;
 bool state=0; 
 int button=0;
-Servo altservo;
-Servo ortakolservo;//
-Servo onservo;
-Servo tutucuservo;
-Servo tucualt;
-#define data1 D2    //
-#define data2 D4    //
-#define data3 D9    //
-#define data4 D8    //
-#define data5 D    //tutucu
+Servo altservo;//data1
+Servo ortakolservo;//data2
+Servo onservo;//data3
+Servo tutucuservo;//data5
+Servo tucualt;//data4
+#define data1 D1   //altservo
+#define data2 D2   //ortakolservo
+#define data3 D3    //onservo
+#define data4 D4    //kiskac dondur
+#define data5 D8    //tutucu aç kapa
 
 
 const int generaldelay = 15; //genel gecikme
@@ -34,15 +34,17 @@ pinMode(D0, INPUT_PULLUP);//button
 Serial.begin(115200);
   //----------------------------------------
 //-----------SERVOLAR-----------
-
+//------SERVO SETUP----------
 altservo.attach(data1);
 ortakolservo.attach(data2);
 onservo.attach(data3);
-tutucuservo.attach(data4);
-altservo.write(90);
-ortakolservo.write(90);
-onservo.write(90);
-tutucuservo.write(90);
+tutucuservo.attach(data5);
+tucualt(data4);
+altservo.write(pos1);
+ortakolservo.write(pos2);
+onservo.write(pos3);
+tutucuservo.write(pos4);
+tucualt.write(pos5);
 }
 
 
@@ -94,6 +96,12 @@ void loop() {
   y3 = analogRead(A3);//kol uc yukari 0 asagi 4095
   button = digitalRead(D0);//kiskac ac kapa
   //--------------------
+  altservo.write(90);
+ortakolservo.write(90);
+onservo.write(90);
+tutucuservo.write(90);
+tucualt.write(90);
+  
   
 //--------DEBUG---------
 //Serial.println("----------");Serial.print("x1: ");Serial.println(xbir);Serial.print("y1: ");Serial.println(ybir);Serial.print("x2: ");Serial.println(x2);Serial.print("y2: ");Serial.println(y2);Serial.print("x3: ");Serial.println(x3);Serial.print("y3: ");Serial.println(y3);Serial.print("button: ");Serial.println(button);Serial.print("state: ");Serial.println(state);
@@ -120,6 +128,9 @@ void loop() {
       sol();
       delay(generaldelay);
     }
+  
+  
+  
     if(x2 <300){
      //kol yukari
       delay(generaldelay);
@@ -128,12 +139,16 @@ void loop() {
       //kol asagi
       delay(generaldelay);
     }
-    if(y2 <300){
+    if(y2 <300 && pos1<150){
       //kol sag
+      pos1=pos1++;
+      altservo.write(pos1);
       delay(generaldelay);
     }
-    else if(y2 >2000){
+    else if(y2 >2000 && pos1 > 10){
       //kol sol
+      pos1=pos1--;
+      altservo.write(pos1);
       delay(generaldelay);
     }
     if(x3 <300){
