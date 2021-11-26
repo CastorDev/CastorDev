@@ -39,7 +39,7 @@ altservo.attach(data1);
 ortakolservo.attach(data2);
 onservo.attach(data3);
 tutucuservo.attach(data5);
-tucualt(data4);
+tucualt.attach(data4);
 altservo.write(pos1);
 ortakolservo.write(pos2);
 onservo.write(pos3);
@@ -54,35 +54,35 @@ digitalWrite(motorA1,0);
 digitalWrite(motorA2,0);
 digitalWrite(motorB1,0);
 digitalWrite(motorB2,0);
-//Serial.println("stop");//debug
+Serial.println("stop");//debug
 }
 void ilerle(){
 digitalWrite(motorA1,vSpeed);
 digitalWrite(motorA2,0);
 digitalWrite(motorB1,vSpeed);
 digitalWrite(motorB2,0); 
-//Serial.println("ilerle");//debug
+Serial.println("ilerle");//debug
 }
 void geri(){
 digitalWrite(motorA1,0);
 digitalWrite(motorA2,vSpeed);
 digitalWrite(motorB1,0);
 digitalWrite(motorB2,vSpeed); 
-//Serial.println("geri");//debug
+Serial.println("geri");//debug
 }
 void sol(){
 digitalWrite(motorA1,vSpeed);
 digitalWrite(motorA2,150);
 digitalWrite(motorB1,0);
 digitalWrite(motorB2,0);
-//Serial.println("sol");//debug
+Serial.println("sol");//debug
 }
 void sag(){
 digitalWrite(motorA1,0);
 digitalWrite(motorA2,0);
 digitalWrite(motorB1,vSpeed);
 digitalWrite(motorB2,150);
-//Serial.println("sag");//debug
+Serial.println("sag");//debug
 }
 
 
@@ -96,16 +96,20 @@ void loop() {
   y3 = analogRead(A3);//kol uc yukari 0 asagi 4095
   button = digitalRead(D0);//kiskac ac kapa
   //--------------------
-  altservo.write(90);
-ortakolservo.write(90);
-onservo.write(90);
-tutucuservo.write(90);
-tucualt.write(90);
   
   
 //--------DEBUG---------
-//Serial.println("----------");Serial.print("x1: ");Serial.println(xbir);Serial.print("y1: ");Serial.println(ybir);Serial.print("x2: ");Serial.println(x2);Serial.print("y2: ");Serial.println(y2);Serial.print("x3: ");Serial.println(x3);Serial.print("y3: ");Serial.println(y3);Serial.print("button: ");Serial.println(button);Serial.print("state: ");Serial.println(state);
-//delay(200);
+Serial.println("----------");
+Serial.print("x1: ");Serial.println(xbir);
+Serial.print("y1: ");Serial.println(ybir);
+Serial.print("x2: ");Serial.println(x2);
+Serial.print("y2: ");Serial.println(y2);
+Serial.print("x3: ");Serial.println(x3);
+Serial.print("y3: ");Serial.println(y3);
+Serial.print("button: ");Serial.println(button);
+Serial.print("state: ");Serial.println(state);
+Serial.print("pos1: ");Serial.println(pos1);
+delay(generaldelay);
 //----------------------
     if(button ==0){
       state =!state;
@@ -116,7 +120,7 @@ tucualt.write(90);
       ilerle();
       delay(generaldelay);
     }
-    else if (xbir >2000){
+    if (xbir >2000){
       geri();
       delay(generaldelay);
     }
@@ -124,7 +128,7 @@ tucualt.write(90);
       sag();
       delay(generaldelay);
     }
-    else if(ybir >2000);{
+    if(ybir >2000);{
       sol();
       delay(generaldelay);
     }
@@ -135,7 +139,7 @@ tucualt.write(90);
      //kol yukari
       delay(generaldelay);
     }
-    else if(x2 >2000){
+    if(x2 >2000){
       //kol asagi
       delay(generaldelay);
     }
@@ -143,19 +147,25 @@ tucualt.write(90);
       //kol sag
       pos1=pos1++;
       altservo.write(pos1);
+      Serial.println("Kol Sag");
+      Serial.println("pos1: ");
+      Serial.print(pos1);
       delay(generaldelay);
     }
-    else if(y2 >2000 && pos1 > 10){
+    if(y2 >2000 && pos1 > 10){
       //kol sol
       pos1=pos1--;
       altservo.write(pos1);
+      Serial.println("Kol Sol");
+      Serial.print("pos1: ");
+      Serial.println(pos1);
       delay(generaldelay);
     }
     if(x3 <300){
       //
       delay(generaldelay);
     }
-    else if(x3 >2000){
+    if(x3 >2000){
       //
       delay(generaldelay);
     }
@@ -163,7 +173,7 @@ tucualt.write(90);
       //
       delay(generaldelay);
     }
-    else if(y3 >2000){
+    if(y3 >2000){
       //
       delay(generaldelay);
     }
