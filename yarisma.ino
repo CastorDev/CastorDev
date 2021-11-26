@@ -16,7 +16,7 @@ Servo tucualt;//data4
 #define data5 D8    //tutucu aç kapa
 
 
-const int generaldelay = 300; //genel gecikme
+const int generaldelay = 30; //genel gecikme
 const int vSpeed = 100;// hız değiştirmek için
 #define motorA1 D14 // L298N'in IN3 Girişi
 #define motorA2 D12 // L298N'in IN1 Girişi
@@ -24,68 +24,41 @@ const int vSpeed = 100;// hız değiştirmek için
 #define motorB2 D15 // L298N'in IN4 Girişi
   
 void setup() {//Setup
-  //---- KUMANDA PİNLERİ VE SERİAL -----------
+Serial.begin(115200); 
+  //Kumanda
 pinMode(A0, INPUT);pinMode(A1, INPUT);pinMode(A2, INPUT);pinMode(A3, INPUT);pinMode(A4, INPUT);pinMode(A5, INPUT);//analog pinler
 pinMode(D0, INPUT_PULLUP);//button
-  pinMode(motorA1, OUTPUT);
-  pinMode(motorA2, OUTPUT);
-  pinMode(motorB1, OUTPUT);
-  pinMode(motorB2, OUTPUT); 
-Serial.begin(115200);
-  //----------------------------------------
-//-----------SERVOLAR-----------
-pinMode(DAC1,OUTPUT);pinMode(DAC2,OUTPUT);pinMode(D3,OUTPUT);pinMode(D4,OUTPUT);pinMode(D8,OUTPUT);
+    //DC motor
+    pinMode(motorA1, OUTPUT);
+    pinMode(motorA2, OUTPUT);
+    pinMode(motorB1, OUTPUT);
+    pinMode(motorB2, OUTPUT); 
+       //Servo 
+       pinMode(data1,OUTPUT);pinMode(data2,OUTPUT);pinMode(data3,OUTPUT);pinMode(data4,OUTPUT);pinMode(data5,OUTPUT); 
+
 //------SERVO SETUP----------
 altservo.attach(data1);
 ortakolservo.attach(data2);
 onservo.attach(data3);
 tutucuservo.attach(data5);
 tucualt.attach(data4);
-altservo.write(90);
-ortakolservo.write(90);
-onservo.write(90);
-tutucuservo.write(90);
-tucualt.write(90);
+  
+  //Servo align
+    altservo.write(90);
+    ortakolservo.write(90);
+    onservo.write(90);
+    tutucuservo.write(90);
+    tucualt.write(90);
+    delay(2000);
 }
 
-
-
-void stopmotor(){
-digitalWrite(motorA1,0);
-digitalWrite(motorA2,0);
-digitalWrite(motorB1,0);
-digitalWrite(motorB2,0);
-Serial.println("stop");//debug
-}
-void ilerle(){
-digitalWrite(motorA1,vSpeed);
-digitalWrite(motorA2,0);
-digitalWrite(motorB1,vSpeed);
-digitalWrite(motorB2,0); 
-Serial.println("ilerle");//debug
-}
-void geri(){
-digitalWrite(motorA1,0);
-digitalWrite(motorA2,vSpeed);
-digitalWrite(motorB1,0);
-digitalWrite(motorB2,vSpeed); 
-Serial.println("geri");//debug
-}
-void sol(){
-digitalWrite(motorA1,vSpeed);
-digitalWrite(motorA2,150);
-digitalWrite(motorB1,0);
-digitalWrite(motorB2,0);
-Serial.println("sol");//debug
-}
-void sag(){
-digitalWrite(motorA1,0);
-digitalWrite(motorA2,0);
-digitalWrite(motorB1,vSpeed);
-digitalWrite(motorB2,150);
-Serial.println("sag");//debug
-}
-
+/*
+void stopmotor(){digitalWrite(motorA1,0);digitalWrite(motorA2,0);digitalWrite(motorB1,0);digitalWrite(motorB2,0);Serial.println("stop");//debug}            //Stop
+void ilerle(){digitalWrite(motorA1,vSpeed);digitalWrite(motorA2,0);digitalWrite(motorB1,vSpeed);digitalWrite(motorB2,0); Serial.println("ilerle");//debug}  //ileri  
+void geri(){digitalWrite(motorA1,0);digitalWrite(motorA2,vSpeed);digitalWrite(motorB1,0);digitalWrite(motorB2,vSpeed); Serial.println("geri");//debug}      //geri
+void sol(){digitalWrite(motorA1,vSpeed);digitalWrite(motorA2,150);digitalWrite(motorB1,0);digitalWrite(motorB2,0);Serial.println("sol");//debug}            //sol
+void sag(){digitalWrite(motorA1,0);digitalWrite(motorA2,0);digitalWrite(motorB1,vSpeed);digitalWrite(motorB2,150);Serial.println("sag");//debug}            //sag
+*/
 
 void loop() {
   //------KONTROLLER-------
@@ -98,9 +71,10 @@ void loop() {
   button = digitalRead(D0);//kiskac ac kapa
   //--------------------
   
-  
-//--------DEBUG---------
+/*  
+//--------DEBUG--------------------------------
 Serial.println("----------");
+//---------------------------------------------
 Serial.print("x1: ");Serial.println(xbir);
 Serial.print("y1: ");Serial.println(ybir);
 Serial.print("x2: ");Serial.println(x2);
@@ -110,74 +84,134 @@ Serial.print("y3: ");Serial.println(y3);
 Serial.print("button: ");Serial.println(button);
 Serial.print("state: ");Serial.println(state);
 Serial.print("pos1: ");Serial.println(pos1);
+//----------------------------------------------
 Serial.println("----------");
 delay(generaldelay);
-//----------------------
-    if(button ==0){
-      state =!state;
-    delay(generaldelay);
-    }
+//----------------------------------------------
+*/    
+  
     
-    if(xbir <300){
-      ilerle();
-      delay(generaldelay);
-    }
-     if (xbir >2000){
-      geri();
-      delay(generaldelay);
-    }
-    if(ybir <300){
-      sag();
-      delay(generaldelay);
-    }
-     if(ybir >2000);{
-      sol();
+ //----------dc motor kontrol--------------
+    if(xbir <300){//ileri
+      digitalWrite(motorA1,vSpeed);
+      digitalWrite(motorA2,0);
+      digitalWrite(motorB1,vSpeed);
+      digitalWrite(motorB2,0); 
+        Serial.println("ileri");//debug
+      //ilerle();
       delay(generaldelay);
     }
   
+     if (xbir >2000){//geri
+       digitalWrite(motorA1,0);
+       digitalWrite(motorA2,vSpeed);
+       digitalWrite(motorB1,0);
+       digitalWrite(motorB2,vSpeed);
+        Serial.println("geri");//debug
+      //geri();
+      delay(generaldelay);
+    }
+  
+    if(ybir <300){//sag
+      digitalWrite(motorA1,0);
+      digitalWrite(motorA2,0);
+      digitalWrite(motorB1,vSpeed);
+      digitalWrite(motorB2,150);
+        Serial.println("sag");//debug
+      //sag();
+      delay(generaldelay);
+    }
+  
+     if(ybir >2000);{//sol
+       digitalWrite(motorA1,vSpeed);
+       digitalWrite(motorA2,150);
+       digitalWrite(motorB1,0);
+       digitalWrite(motorB2,0);
+        Serial.println("sol");//debug
+      //sol();
+      delay(generaldelay);
+    }
+     else{//stop motor
+       digitalWrite(motorA1,0);
+       digitalWrite(motorA2,0);
+       digitalWrite(motorB1,0);
+       digitalWrite(motorB2,0);
+        Serial.println("stop");//debug 
+       //stopmotor();
+    }
+  
+  
+  
+  //------------Servo----------
+  if(button ==0){
+      state =!state;
+        if(state ==1){
+          tutucuservo.write(100);   //tutucu kiskac
+        }
+        else{
+         tutucu.servo.write(10); 
+        }
+    delay(generaldelay);
+    }
   
   
     if(y2 <300){
      //kol sag
       delay(generaldelay);
     }
+  
+  
+  
     if(y2 >2000){
       //kol sol
       delay(generaldelay);
     }
+  
+  
+  
     if(x2 <300 && pos1<150){
       //kol asagi?
       pos1=pos1+4;
       altservo.write(pos1);
-      Serial.println("Kol Sag");
+      //Serial.println("Kol Sag");
       delay(generaldelay);
     }
+  
+  
      if(x2 >2000 && pos1 > 10){
       //kol yukari?
       pos1=pos1-4;
       altservo.write(pos1);
-      Serial.println("Kol Sol");
+      //Serial.println("Kol Sol");
       delay(generaldelay);
     }
+  
+ 
     if(x3 <300){
       //
       delay(generaldelay);
     }
+  
+  
      if(x3 >2000){
       //
       delay(generaldelay);
     }
+  
+  
     if(y3 <300){
       //
       delay(generaldelay);
     }
+  
+  
     if(y3 >2000){
       //
       delay(generaldelay);
     }
-    else{
-      stopmotor();    
-    }
+  
+  
+
 }
 /*
           YAPILMASI GEREKENLER
